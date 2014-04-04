@@ -99,4 +99,16 @@ describe User do
 
   end
 
+  describe "emails should be stored downcase" do
+    let(:upper_email) { 'EXAMPLE@EXAMPLE.COM' }
+    before do
+      @user.email = upper_email
+      @user.save
+    end
+
+    it "user should have downcased email" do
+      expect(@user.email).to eq upper_email.downcase
+    end
+  end
+
 end
