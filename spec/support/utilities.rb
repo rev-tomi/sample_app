@@ -12,3 +12,21 @@ RSpec::Matchers.define :have_error_message do |message|
   end
 end
 
+RSpec::Matchers.define :have_success_message do |message|
+  match do |page|
+    expect(page).to have_selector('div.alert.alert-success', text: message)
+  end
+end
+
+RSpec::Matchers.define :have_error_explanation do
+  match do |page|
+    expect(page).to have_selector('#error_explanation ul li')
+  end
+end
+
+RSpec::Matchers.define :have_error_field do
+  match do |page|
+    expect(page).to have_selector('.field_with_errors')
+  end
+end
+

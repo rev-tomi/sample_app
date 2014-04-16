@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'support/utilities'
 
 describe "UserPages" do
   
@@ -34,12 +35,8 @@ describe "UserPages" do
 
         it { should have_title('Sign up') }
         it { should have_content('error') }
-        it "should have error items" do
-          all('#error_explanation ul li').should_not be_empty
-        end
-        it "should have field with error" do
-          all('.field_with_errors').should_not be_empty
-        end
+        it { should have_error_explanation }
+        it { should have_error_field }
       end
     end
 
@@ -61,7 +58,7 @@ describe "UserPages" do
 
         it { should have_link('Sign out') }
         it { should have_title(user.name) }
-        it { should have_selector('div.alert.alert-success', text: 'Welcome') }
+        it { should have_success_message('Welcome') }
 
       end
 
