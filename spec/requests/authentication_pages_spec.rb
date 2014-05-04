@@ -72,6 +72,21 @@ describe "Authentication" do
         it { should_not have_link('Settings') } 
       end
     end
+
+    describe "with friendly forwarding" do
+      let(:user) { FactoryGirl.create(:user) }
+      before do
+        visit users_path
+        sign_in user
+      end
+
+      it { should have_content('All users') }
+      it "should go to a different page on subsequent redirect" do
+        sign_in user
+        should_not have_content('All users')
+        page.should have_selector(:css, 'img.gravatar')
+      end
+    end
   end
 
   describe "authorization" do
