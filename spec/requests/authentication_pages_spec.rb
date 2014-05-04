@@ -43,7 +43,27 @@ describe "Authentication" do
       it { should have_link('Profile',      href: user_path(user)) }
       it { should have_link('Settings',     href: edit_user_path(user)) }
       it { should have_link('Sign out',     href: signout_path) }
-      it { should_not have_link('Sign in',  href: signin_path )}
+      it { should_not have_link('Sign in',  href: signin_path ) }
+
+      describe "signed in user cannot sign up" do
+        
+        describe "cannot post new user" do
+          before { sign_in user, no_capybara: true }
+          
+          it "should redirect to root" do
+            post '/users'
+            response.code.should == "302"
+            response.should redirect_to(root_path)
+          end
+        end
+
+        describe "cannot access new action" do
+          it "signup form should redirect to root" do
+            visit ('/users/new')
+            page.should have_content('Welcome to the Sample App')
+          end
+        end
+      end
 
       describe "after sign out" do
         before { click_link 'Sign out' }
