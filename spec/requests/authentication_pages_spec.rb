@@ -147,6 +147,16 @@ describe "Authentication" do
         specify { expect(response).to redirect_to(root_url) }
       end
     end
+
+    describe "as admin user" do
+      let(:user) { FactoryGirl.create(:user, admin: true) }
+      before { sign_in user, no_capybara: true }
+
+      describe "admins cannot delete themselves" do
+        before { delete user_path(user) }
+        specify { expect(response).to redirect_to(root_url) }
+      end
+    end
   end
 
 end
