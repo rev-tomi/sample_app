@@ -41,5 +41,19 @@ describe "MicropostPages" do
       end
     end
   end
+
+  describe "pagination" do
+    before { 1.upto(50){ |i| FactoryGirl.create(:micropost, user: user, content: "Foo - #{i}") } }
+    after { user.microposts.delete_all }
+    
+    before { visit user_path(user) }
+
+    it { should have_selector('div.pagination') }
+    it "should list each micropost" do
+      user.microposts.paginate(page: 1).each do |micropost|
+        expect(page).to have_content(micropost.content)
+      end
+    end
+  end
 end
 

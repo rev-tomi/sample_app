@@ -60,7 +60,7 @@ describe "Authentication" do
         describe "cannot access new action" do
           it "signup form should redirect to root" do
             visit ('/users/new')
-            page.should have_content('Welcome to the Sample App')
+            page.should have_content('Micropost Feed')
           end
         end
       end

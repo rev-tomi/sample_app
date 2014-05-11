@@ -64,11 +64,44 @@ describe "UserPages" do
     it { should have_title(full_title('Sign up')) }
   end
 
+  describe "micropost sidebar" do
+    let (:new_user) { FactoryGirl.create(:user) }
+    let (:onetime_user) { FactoryGirl.create(:user) }
+    let (:serious_user) { FactoryGirl.create(:user) }
+    let! (:m1) { FactoryGirl.create(:micropost, user: onetime_user, content: "Foo") }
+    let! (:m2) { FactoryGirl.create(:micropost, user: serious_user, content: "Bar1") }
+    let! (:m3) { FactoryGirl.create(:micropost, user: serious_user, content: "Bar2") }
+
+    describe "no microposts" do
+      before do
+        sign_in(new_user)
+        visit root_path
+      end
+      it { should have_content('0 microposts') }
+    end
+
+    describe "one micropost" do
+       before do
+        sign_in(onetime_user)
+        visit root_path
+      end
+      it { should have_content('1 micropost') }
+    end
+     describe "two microposts" do
+       before do
+        sign_in(serious_user)
+        visit root_path
+      end
+      it { should have_content('2 microposts') }
+    end
+  end
+
   describe "profile page" do
     let(:user) { FactoryGirl.create(:user) }
     let!(:m1) { FactoryGirl.create(:micropost, user: user, content: "Foo") }
     let!(:m2) { FactoryGirl.create(:micropost, user: user, content: "Bar") }
     before { visit user_path(user) }
+    
 
     it { should have_content(user.name) }
     it { should have_title(user.name) }
