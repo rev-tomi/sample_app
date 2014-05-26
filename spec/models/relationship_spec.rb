@@ -26,4 +26,11 @@ describe Relationship do
     before { relationship.follower_id = nil }
     it { should_not be_valid }
   end
+
+  describe "destroying relationship" do
+    describe "destroying the relationship" do
+      before { relationship.destroy }
+      specify { follower.feed.should_not include(relationship) }
+    end
+  end
 end
